@@ -73,14 +73,14 @@ void handleMenuInput(Employee*& pHead, Command command)
 	{
 	case Command::viewEmployees:
 		std::cout << ">> View Employees:\n";
-		//viewEmployees(pHead);
+		viewEmployees(pHead);
 		break;
 	case Command::addEmployee: {
 		std::cout << ">> Add Employee:\n";
 		std::cout << "Enter name:";
 		std::string name;
 		std::getline(std::cin, name);
-		//addNewEmployee(pHead, name);
+		addNewEmployee(pHead, name);
 	}
 							 break;
 	case Command::removeEmployee:
@@ -105,20 +105,6 @@ void handleMenuInput(Employee*& pHead, Command command)
 // In some cases, the first parameter has been given.
 // =============================================================================
 
-// Output a list of all employees to the console.
-// If the list is empty (nullptr), print "empty list.\n" 
-// If it isn't empty, print each employee's id and name to the console:
-//    eg: [id: 5, name: Mary]\n
-// Create a pointer to traverse the list, point it at the front of the list,
-// process the node (output as shown above), and advance the pointer through the
-// list.  Repeat until you process the last node.
-// -param 1: (given) a pointer to an Employee struct (representing the front 
-//			 of the list of employees.
-// return: nothing
-// TODO ------------------------------------------------------------------------
-//viewEmployees(Employee* pHead);
-
-
 // Create a new employee struct on the heap.
 // Use a static local variable to generate unique employee id's with (initialize
 // it and then increment it every time this function is called). 
@@ -130,7 +116,17 @@ void handleMenuInput(Employee*& pHead, Command command)
 // - param 1: a string - the employee's name.
 // - return: a pointer to the dynamically allocated Employee struct 
 // TODO ------------------------------------------------------------------------
-//createEmployee();
+Employee* createEmployee(const std::string& name)
+{
+	static int id{ 0 };
+	Employee* employee{ new Employee };
+	employee->id = id;
+	employee->name = name;
+	employee->pNext = nullptr;
+
+	id++;
+	return employee;
+}
 
 
 // Create a new employee node, then add it to the list
@@ -142,7 +138,47 @@ void handleMenuInput(Employee*& pHead, Command command)
 // - param 2: a string - the employee's name.
 // - return: nothing
 // TODO ------------------------------------------------------------------------
-//addNewEmployee(Employee*& pHead);
+void addNewEmployee(Employee*& pHead, const std::string& name)
+{
+	Employee* newEmployee{ createEmployee(name) };
+
+	// Handle case where head is nullptr
+	if (!pHead) {
+		pHead = newEmployee;
+		return;
+	}
+
+	Employee* employeeAtBack{ pHead };
+	while (employeeAtBack->pNext) {
+		employeeAtBack = employeeAtBack->pNext;
+	}
+
+	employeeAtBack->pNext = newEmployee;
+}
+
+
+// Output a list of all employees to the console.
+// If the list is empty (nullptr), print "empty list.\n" 
+// If it isn't empty, print each employee's id and name to the console:
+//    eg: [id: 5, name: Mary]\n
+// Create a pointer to traverse the list, point it at the front of the list,
+// process the node (output as shown above), and advance the pointer through the
+// list.  Repeat until you process the last node.
+// -param 1: (given) a pointer to an Employee struct (representing the front 
+//			 of the list of employees.
+// return: nothing
+// TODO ------------------------------------------------------------------------
+void viewEmployees(Employee*& pHead)
+{
+	if (!pHead) return;
+
+	Employee* currentEmployee{ pHead };
+
+	while (currentEmployee) {
+		std::cout << "[id: " << currentEmployee->id << ", name: " << currentEmployee->name << "]\n";
+		currentEmployee = currentEmployee->pNext;
+	}
+}
 
 
 // Search through the list for a node with the given id.  
@@ -177,3 +213,14 @@ void handleMenuInput(Employee*& pHead, Command command)
 //removeEmployee(Employee*& pHead);
 
 
+void removeAllEmployees(Employee*& pHead)
+{
+	if (!pHead)
+		return;
+
+	if (pHead->pNext)
+		removeAllEmployees(pHead->pNext);
+
+	delete pHead;
+	pHead = nullptr;
+}

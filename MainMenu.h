@@ -45,4 +45,12 @@ Command getMenuCommand();
 // - param 2: a Command (enum) representing the action to be taken.
 void handleMenuInput(Employee*& pHead, Command command);
 
+Employee* createEmployee(const std::string& name);
+
+void addNewEmployee(Employee*& pHead, const std::string& name);
+
+void viewEmployees(Employee*& pHead);
+
+void removeAllEmployees(Employee*& pHead);
+
 #endif
