@@ -167,7 +167,6 @@ void addNewEmployee(Employee*& pHead, const std::string& name)
 // -param 1: (given) a pointer to an Employee struct (representing the front 
 //			 of the list of employees.
 // return: nothing
-// TODO ------------------------------------------------------------------------
 void viewEmployees(Employee*& pHead)
 {
 	if (!pHead) return;
@@ -191,7 +190,6 @@ void viewEmployees(Employee*& pHead)
 //			 the id passed in and a pointer to that node's parent. 
 //           If node not found, pointers inside NodeInfo should both be nullptr.
 //           If node is first in the list, NodeInfo.pParent should be nullptr.
-// TODO ------------------------------------------------------------------------
 // getNodeInfo(Employee* pHead);
 
 
@@ -209,10 +207,11 @@ void viewEmployees(Employee*& pHead)
 // - param 1: (given) a pointer to the front of the list of employees (passed by reference)
 // - param 2: an int (the id of the employee we're searching for). 
 // - return: nothing
-// TODO ------------------------------------------------------------------------
 //removeEmployee(Employee*& pHead);
 
-
+// Removes all employees in an Employee linked-list
+// - param: A pointer to the head of a linked employee list
+// - return: nothing
 void removeAllEmployees(Employee*& pHead)
 {
 	if (!pHead)
