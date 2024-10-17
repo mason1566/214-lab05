@@ -115,7 +115,6 @@ void handleMenuInput(Employee*& pHead, Command command)
 //				-nullptr.
 // - param 1: a string - the employee's name.
 // - return: a pointer to the dynamically allocated Employee struct 
-// TODO ------------------------------------------------------------------------
 Employee* createEmployee(const std::string& name)
 {
 	static int id{ 0 };
@@ -137,7 +136,6 @@ Employee* createEmployee(const std::string& name)
 //            by reference)
 // - param 2: a string - the employee's name.
 // - return: nothing
-// TODO ------------------------------------------------------------------------
 void addNewEmployee(Employee*& pHead, const std::string& name)
 {
 	Employee* newEmployee{ createEmployee(name) };
@@ -190,7 +188,25 @@ void viewEmployees(Employee*& pHead)
 //			 the id passed in and a pointer to that node's parent. 
 //           If node not found, pointers inside NodeInfo should both be nullptr.
 //           If node is first in the list, NodeInfo.pParent should be nullptr.
-// getNodeInfo(Employee* pHead);
+NodeInfo* getNodeInfo(Employee*& pHead, const int& employeeId) 
+{
+	NodeInfo* nodeInfo{};
+	nodeInfo->pNode = nullptr;
+	nodeInfo->pParent = nullptr;
+
+	Employee* parent{ nullptr };
+	Employee* child{ pHead };
+	while (child) {
+		if (child->id == employeeId) {
+			nodeInfo->pNode = child;
+			nodeInfo->pParent = parent;
+			break;
+		}
+		parent = child;
+		child = child->pNext;
+	}
+	return nodeInfo;
+}
 
 
 // Removes an employee node with the given id from the list.

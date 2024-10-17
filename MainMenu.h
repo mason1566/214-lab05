@@ -51,6 +51,8 @@ void addNewEmployee(Employee*& pHead, const std::string& name);
 
 void viewEmployees(Employee*& pHead);
 
+NodeInfo* getNodeInfo(Employee*& pHead);
+
 void removeAllEmployees(Employee*& pHead);
 
 #endif
