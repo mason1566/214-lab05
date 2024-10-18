@@ -86,7 +86,7 @@ void handleMenuInput(Employee*& pHead, Command command)
 	case Command::removeEmployee:
 		std::cout << ">> Remove Employee:\n";
 		std::cout << "Enter id:";
-		//removeEmployee(pHead, getIntFromUser());
+		removeEmployee(pHead, getIntFromUser());
 		break;
 	case Command::exit:
 		std::cout << "Exiting\n";
@@ -191,20 +191,20 @@ void viewEmployees(Employee*& pHead)
 NodeInfo* getNodeInfo(Employee*& pHead, const int& employeeId) 
 {
 	NodeInfo* nodeInfo{};
-	nodeInfo->pNode = nullptr;
-	nodeInfo->pParent = nullptr;
 
 	Employee* parent{ nullptr };
 	Employee* child{ pHead };
 	while (child) {
 		if (child->id == employeeId) {
-			nodeInfo->pNode = child;
 			nodeInfo->pParent = parent;
-			break;
+			nodeInfo->pNode = child;
+			return nodeInfo;
 		}
 		parent = child;
 		child = child->pNext;
 	}
+	nodeInfo->pParent = nullptr;
+	nodeInfo->pNode = nullptr;
 	return nodeInfo;
 }
 
@@ -223,7 +223,37 @@ NodeInfo* getNodeInfo(Employee*& pHead, const int& employeeId)
 // - param 1: (given) a pointer to the front of the list of employees (passed by reference)
 // - param 2: an int (the id of the employee we're searching for). 
 // - return: nothing
-//removeEmployee(Employee*& pHead);
+void removeEmployee(Employee*& pHead, const int& employeeId) {
+	NodeInfo* employeeNode{ getNodeInfo(pHead, employeeId) };
+
+	if (!employeeNode->pNode) {
+		printf("Error: employee id:%d not found\n", employeeId);
+		return;
+	}
+
+	// Handle case where employee is the first node in the list
+	if (!employeeNode->pParent) {
+		// handle case where there is only one employee
+		if (!employeeNode->pNode->pNext) {
+			delete pHead;
+			pHead = nullptr; 
+		}
+		else {
+			pHead = pHead->pNext;
+			delete employeeNode->pNode;
+		}
+	}
+	else {
+		employeeNode->pParent->pNext = employeeNode->pNode->pNext;
+		delete employeeNode->pNode;
+	}
+	
+	employeeNode->pNode = nullptr;
+	employeeNode->pParent = nullptr;
+	delete employeeNode;
+	employeeNode = nullptr;
+	printf("removed id:%d \n", employeeId);
+}
 
 // Removes all employees in an Employee linked-list
 // - param: A pointer to the head of a linked employee list

@@ -53,6 +53,8 @@ void viewEmployees(Employee*& pHead);
 
 NodeInfo* getNodeInfo(Employee*& pHead);
 
+void removeEmployee(Employee*& pHead, const int& employeeId);
+
 void removeAllEmployees(Employee*& pHead);
 
 #endif
